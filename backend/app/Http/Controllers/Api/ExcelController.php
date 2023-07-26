@@ -29,6 +29,10 @@ class ExcelController extends Controller
         return redirect()->back()->with('success', 'File imported successfully.');
     }
 
+    public function dropTable(){
+        ProductsModel::truncate();
+    }
+
     /**
      * Store a newly created resource in storage.
      */

@@ -45,7 +45,23 @@ function Products(){
                 window.location.reload()
             })
             .catch(error => {
-                console.log(error);
+                window.location.reload()
+            });
+
+    }
+    const dropTable = () =>{
+        const file = document.querySelector('input[type=file]').files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        fetch(baseUrl+'drop', {
+            method: 'POST',
+        })
+            .then(response => response.json())
+            .then(data => {
+                window.location.reload()
+            })
+            .catch(error => {
+                window.location.reload()
             });
 
     }
@@ -55,6 +71,9 @@ function Products(){
             <div className="button">
                 <ButtonGroup aria-label="Basic example">
                     <Button onClick={excelExport} variant="secondary">Export</Button>
+                    <Button onClick={dropTable} variant="secondary">Drop Table</Button>
+                </ButtonGroup>
+            </div>
                     <Formik
                         initialValues={{
                             file: null
@@ -75,17 +94,17 @@ function Products(){
                               touched
                           }) => (
                     <Form onSubmit={handleSubmit}>
-                        <div>
+                        <div className="form-input">
                             <label htmlFor="file">Select a file:</label>
                             <Field type="file" name="file" id="file" />
                             <ErrorMessage name="file" />
                         </div>
-                        <Button type="submit" variant="secondary">İmport</Button>
+                        <div className="import">
+                            <Button type="submit" variant="secondary">İmport</Button>
+                        </div>
                     </Form>
                         )}
                     </Formik>
-                </ButtonGroup>
-            </div>
             <div>
                 <Table responsive="sm"
                        dataS
