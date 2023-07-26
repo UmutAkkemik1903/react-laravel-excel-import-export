@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('category_id')->nullable();
             $table->string('group_code')->nullable();
             $table->string('products_code')->nullable();
@@ -29,8 +29,9 @@ return new class extends Migration
             $table->string('money_type')->nullable();
             $table->string('market_selling_price')->nullable();
             $table->string('n_selling_price')->nullable();
-            $table->string('commission')->nullable();
+            $table->text('commission')->nullable();
             $table->string('delivery_template_name')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -39,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_products');
+        Schema::dropIfExists('products');
     }
 };

@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('product','App\Http\Controllers\Api\ExcelController@index');
 Route::get('export','App\Http\Controllers\Api\ExcelController@export');
+Route::post('import','App\Http\Controllers\Api\ExcelController@import');

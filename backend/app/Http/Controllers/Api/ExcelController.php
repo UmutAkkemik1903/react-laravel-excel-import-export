@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exports\ProductsExport;
 use App\Http\Controllers\Controller;
+use App\Imports\ProductsImport;
 use App\Models\ProductsModel;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,6 +22,11 @@ class ExcelController extends Controller
 
     public function export(){
         return Excel::download(new ProductsExport, 'product.xlsx');
+    }
+
+    public function import(Request $request){
+        Excel::import(new ProductsImport, $request->file('file'));
+        return redirect()->back()->with('success', 'File imported successfully.');
     }
 
     /**

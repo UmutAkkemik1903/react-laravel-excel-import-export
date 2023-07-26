@@ -1,12 +1,14 @@
 import {Button, ButtonGroup, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import {Formik, Form, Field, ErrorMessage} from "formik";
 import axios from "axios";
+import * as Yup from 'yup';
 import baseUrl from "../url/baseUrl";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function Products(){
     const success = () => toast.success("İndirme başarılı");
-
+    const [fileList, setFileList] = useState([]);
     const [data,setData]=useState([]);
     const [excellExport,setExcellExport]=useState([]);
     const [resfresh,setRefresh]=useState(false)
@@ -30,13 +32,58 @@ function Products(){
             });
 
     }
+    const handleSubmit = (values) =>{
+        const file = document.querySelector('input[type=file]').files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        fetch(baseUrl+'import', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                window.location.reload()
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+    }
 
     return(
         <>
             <div className="button">
                 <ButtonGroup aria-label="Basic example">
                     <Button onClick={excelExport} variant="secondary">Export</Button>
-                    <Button type="file" variant="secondary">İmport</Button>
+                    <Formik
+                        initialValues={{
+                            file: null
+                        }}
+                        onSubmit={handleSubmit}
+                        validationSchema={
+                            Yup.object().shape({
+                                file:Yup.string().required('Dosya Eklemediniz!'),
+                            })
+                        }
+                    >
+                        {({
+                              values,
+                              handleChange,
+                              handleSubmit,
+                              setFieldValue,
+                              errors,
+                              touched
+                          }) => (
+                    <Form onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor="file">Select a file:</label>
+                            <Field type="file" name="file" id="file" />
+                            <ErrorMessage name="file" />
+                        </div>
+                        <Button type="submit" variant="secondary">İmport</Button>
+                    </Form>
+                        )}
+                    </Formik>
                 </ButtonGroup>
             </div>
             <div>
